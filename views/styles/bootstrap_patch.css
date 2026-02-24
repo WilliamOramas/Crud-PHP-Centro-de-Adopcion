@@ -1,0 +1,85 @@
+/* css/bootstrap_patch.css */
+
+/* Se importa Bootstrap directamente al inicio del CSS */
+@import url('bootstrap.min.css');
+@import url('bootstrap-icons.css');
+
+/* Estilos automáticos para las etiquetas actuales */
+body {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Convierte las tablas simples en tablas de Bootstrap */
+table {
+    width: 100% !important;
+    margin-top: 1rem;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: none !important;
+}
+
+table th {
+    background-color: #0d6efd;
+    color: white;
+    padding: 1rem !important;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+table td {
+    padding: 0.75rem !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Convierte los enlaces en botones automáticamente */
+a {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    margin: 2px;
+    font-size: 0.9rem;
+    text-decoration: none !important;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+    background-color: #6c757d;
+    color: white !important;
+}
+
+a:hover { background-color: #5a6268; }
+
+/* Colores específicos para ciertas palabras en los enlaces */
+a[href*="login"], a[href*="asignar"] { background-color: #0d6efd; }
+a[href*="eliminar"], a[href*="adopcion"], a[href*="loginout"] { background-color: #dc3545; }
+a[href*="editar"], a[href*="crear"] { background-color: #198754; }
+
+/* Estilos para los formularios actuales */
+form {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    max-width: 500px;
+    margin: auto;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 0.375rem;
+    font-weight: bold;
+}
