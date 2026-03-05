@@ -1,0 +1,39 @@
+/* Importar fuentes si no quieres tenerlas en el HTML */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+    --brand-green: #7C9070;
+    --brand-orange: #D98C5F;
+    --brand-cream: #FFFBF2;
+    --brand-dark: #2D2727;
+}
+
+/* Clases de utilidad personalizadas que Tailwind no trae por defecto */
+.bg-brand-green { background-color: var(--brand-green) !important; }
+.bg-brand-orange { background-color: var(--brand-orange) !important; }
+.text-brand-green { color: var(--brand-green) !important; }
+.text-brand-dark { color: var(--brand-dark) !important; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--brand-cream);
+    color: var(--brand-dark);
+}
+
+.serif {
+    font-family: 'Playfair Display', serif;
+}
+
+.hero-image {
+    border-radius: 2rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.btn-transition {
+    transition: all 0.3s ease;
+}
+
+.btn-transition:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

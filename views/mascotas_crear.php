@@ -1,15 +1,13 @@
 <?php
-session_start(); // Inicia la sesion
-require_once '../bd/conexion.php'; // Para conectarse a la base de datos
-require_once '../bd/consultas.php';  // Para importar las funciones
-require_once '../controllers/validar_datos/funciones.php'; // Para importar las validaciones
-$titulo = "Pequeños amigos";
+session_start(); 
+require_once '../bd/conexion.php'; 
+require_once '../bd/consultas.php';  
+require_once '../controllers/validar_datos/funciones.php'; 
+$titulo = "Registrar Mascota - Pequeños Amigos";
 include('header.php');
 
-// Si no existe la variable de sesion cedula redirige al inicio de sesion
 if (!isset($_SESSION['cedula'])) { header("Location: /adopcioncom/views/login.php"); exit(); }
 
-// Verifica si la pagina se cargo mediante el envio de un formulario 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre_mascota = $_POST['nombre_mascota'];
     $especie = $_POST['especie'];
@@ -19,85 +17,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $peso = $_POST['peso_g'];
     $emp_id = $_SESSION['cedula'];
 
-    // Validacion de la creacion de la mascota
     if (validarCreacionDeMascotasSinAsignar($nombre_mascota, $especie, $edad, $genero, $estado, $peso)==false) {
-    
         header("Location: /adopcioncom/views/mascotas_lista_sin_cuidador.php?msj=" . urlencode("Datos escritos incorrectamente"));
         exit();
-
     }
-    // Registra la mascota 
     registrarMascotaConValidacionBD($pdo,$emp_id,$estado,$nombre_mascota,$especie, $edad, $genero, $peso);
 }
 ?>
 
-<div class="container">
-    <?php if (isset($_GET['msj'])): ?>
-        <div id="alerta-notif" class="alert alert-secondary text-center shadow-sm border-0" 
-             style="background-color: #f8f9fa; color: #343a40; transition: opacity 0.5s ease;">
-            <i class="bi bi-info-circle-fill me-2"></i>
-            <?php echo htmlspecialchars($_GET['msj']); ?>
+<div class="flex items-center justify-center p-6 min-h-[90vh]">
+    <div class="max-w-2xl w-full bg-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-50 relative">
+        
+        <?php if (isset($_GET['msj'])): ?>
+            <div id="alerta-notif" class="absolute top-6 left-1/2 -translate-x-1/2 w-11/12 z-20 bg-brand-orange text-white px-6 py-3 rounded-2xl shadow-lg text-center font-bold transition-opacity duration-500">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                <?php echo htmlspecialchars($_GET['msj']); ?>
+            </div>
+            <script>
+                setTimeout(() => {
+                    const alerta = document.getElementById('alerta-notif');
+                    if(alerta) {
+                        alerta.style.opacity = '0';
+                        setTimeout(() => alerta.remove(), 500);
+                    }
+                    const url = new URL(window.location);
+                    url.searchParams.delete('msj');
+                    window.history.replaceState({}, document.title, url.pathname);
+                }, 3000);
+            </script>
+        <?php endif; ?>
+
+        <div class="text-center mb-8">
+            <h2 class="serif text-4xl font-bold text-brand-green mb-2">Nueva Mascota</h2>
+            <p class="text-gray-500">Ingresa los datos para el nuevo integrante</p>
         </div>
-        <script>
-            setTimeout(() => {
-                const alerta = document.getElementById('alerta-notif');
-                if(alerta) {
-                    alerta.style.opacity = '0';
-                    setTimeout(() => alerta.remove(), 500);
-                }
-                // Limpia la URL para evitar que el msj vuelva al recargar
-                const url = new URL(window.location);
-                url.searchParams.delete('msj');
-                window.history.replaceState({}, document.title, url.pathname);
-            }, 3000);
-        </script>
-    <?php endif; ?>
 
-    <h2 class="text-center mb-4">Registrar Mascota</h2>
+        <form id="formMascota" method="POST" class="space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Nombre de la Mascota</label>
+                    <input type="text" name="nombre_mascota" id="nombre_mascota" 
+                           placeholder="Ej: Firulais" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all" required>
+                </div>
 
-    <form id="formMascota" method="POST">
-        <label for="nombre_mascota">Nombre de la Mascota</label>
-        <input type="text" name="nombre_mascota" id="nombre_mascota" 
-               placeholder="Nombre de la mascota (ej: Firulais)" 
-               pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" 
-               title="Solo se permiten letras" required>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Especie</label>
+                    <input type="text" name="especie" id="especie" 
+                           placeholder="Ej: Perro" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all" required>
+                </div>
 
-        <label for="especie">Especie</label>
-        <input type="text" name="especie" id="especie" 
-               placeholder="Especie (ej: Perro)" 
-               pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" 
-               title="Solo se permiten letras" required>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Edad (Meses)</label>
+                    <input type="number" name="edad_meses" id="edad_meses" 
+                           placeholder="Meses de vida" min="0" max="600"
+                           class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all" required>
+                </div>
 
-        <label for="edad_meses">Edad (Meses)</label>
-        <input type="number" name="edad_meses" id="edad_meses" 
-               placeholder="Edad en meses" min="0" max="600" required>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Peso (Gramos)</label>
+                    <input type="number" step="0.01" name="peso_g" id="peso_g" 
+                           placeholder="Ej: 500.50" min="1"
+                           class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all" required>
+                </div>
 
-        <label for="genero">Género</label>
-        <select name="genero" id="genero">
-            <option value="Macho">Macho</option>
-            <option value="Hembra">Hembra</option>
-        </select>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Género</label>
+                    <select name="genero" id="genero" class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all appearance-none cursor-pointer">
+                        <option value="Macho">Macho</option>
+                        <option value="Hembra">Hembra</option>
+                    </select>
+                </div>
 
-        <label for="estado">Estado de Salud</label>
-        <select name="estado" id="estado">
-            <option value="Disponible">Disponible</option>
-            <option value="En tratamiento">En tratamiento</option>
-        </select>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Estado de Salud</label>
+                    <select name="estado" id="estado" class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all appearance-none cursor-pointer">
+                        <option value="Disponible">Disponible</option>
+                        <option value="En tratamiento">En tratamiento</option>
+                    </select>
+                </div>
+            </div>
 
-        <label for="peso_g">Peso (Gramos)</label>
-        <input type="number" step="0.01" name="peso_g" id="peso_g" 
-               placeholder="Peso en g (ej: 500.50)" min="1" required>
+            <button type="submit" class="w-full py-4 bg-brand-green text-white font-bold rounded-2xl text-lg btn-transition shadow-lg shadow-green-900/10 mt-4 active:scale-95">
+                Registrar mascota
+            </button>
+        </form>
 
-        <button type="submit">Registrar mascota</button>
-    </form>
-
-    <div class="text-center mt-3">
-        <a href="/adopcioncom/views/mascotas_lista_sin_cuidador.php">Volver a la lista</a>
+        <div class="text-center mt-6">
+            <a href="/adopcioncom/views/mascotas_lista_sin_cuidador.php" class="text-sm font-bold text-gray-400 hover:text-brand-orange transition-all">
+                ← Volver a la lista
+            </a>
+        </div>
     </div>
 </div>
 
 <script>
-    // Validación de seguridad en el front
     document.getElementById('formMascota').addEventListener('submit', function(e) {
         const nombre = document.getElementById('nombre_mascota').value.trim();
         const especie = document.getElementById('especie').value.trim();

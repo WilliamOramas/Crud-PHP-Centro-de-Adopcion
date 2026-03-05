@@ -128,7 +128,7 @@ function asignarMascotaAEmpleadoBD($pdo,$id,$cedula) {
         if ($totalAsignadas >= 5) {
             // Si ya tiene 5, cancela la transaccion y redirige
             $pdo->rollBack();
-            header("Location: /adopcioncom/views/mascotas_lista_sin_cuidador.php?msj=" . urlencode("El cuidador ya tiene 5 mascotas (límite alcanzado)."));
+            header("Location: /adopcioncom/views/mascotas_lista_sin_cuidador.php?msj=" . urlencode("Ya tienes 5 mascotas (límite de mascotas alcanzado)."));
             exit();
         }
 
