@@ -1,28 +1,14 @@
 <?php
-session_start(); 
-require_once '../bd/conexion.php'; 
-require_once '../bd/consultas.php';  
-require_once '../controllers/validar_datos/funciones.php'; 
+require_once '../controllers/auth.php';
+verificarSesion();
+require_once '../bd/conexion.php';
+
+require_once '../bd/consultas.php';
+
+require_once '../controllers/validar_datos/funciones.php';
+
 $titulo = "Registrar Mascota - Pequeños Amigos";
 include('header.php');
-
-if (!isset($_SESSION['cedula'])) { header("Location: /adopcioncom/views/login.php"); exit(); }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre_mascota = $_POST['nombre_mascota'];
-    $especie = $_POST['especie'];
-    $edad = $_POST['edad_meses'];
-    $genero = $_POST['genero'];
-    $estado = $_POST['estado'];
-    $peso = $_POST['peso_g'];
-    $emp_id = $_SESSION['cedula'];
-
-    if (validarCreacionDeMascotasSinAsignar($nombre_mascota, $especie, $edad, $genero, $estado, $peso)==false) {
-        header("Location: /adopcioncom/views/mascotas_lista_sin_cuidador.php?msj=" . urlencode("Datos escritos incorrectamente"));
-        exit();
-    }
-    registrarMascotaConValidacionBD($pdo,$emp_id,$estado,$nombre_mascota,$especie, $edad, $genero, $peso);
-}
 ?>
 
 <div class="flex items-center justify-center p-6 min-h-[90vh]">
@@ -45,14 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     window.history.replaceState({}, document.title, url.pathname);
                 }, 3000);
             </script>
-        <?php endif; ?>
+        <?php
+endif; ?>
 
         <div class="text-center mb-8">
             <h2 class="serif text-4xl font-bold text-brand-green mb-2">Nueva Mascota</h2>
             <p class="text-gray-500">Ingresa los datos para el nuevo integrante</p>
         </div>
 
-        <form id="formMascota" method="POST" class="space-y-5">
+        <form id="formMascota" action="/adopcioncom/controllers/mascotas_crear_procesar.php" method="POST" class="space-y-5">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="space-y-1">
                     <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Nombre de la Mascota</label>
