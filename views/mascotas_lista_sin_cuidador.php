@@ -1,10 +1,6 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['cedula'])) { 
-    header("Location: /adopcioncom/views/login.php"); 
-    exit(); 
-}
+require_once '../controllers/auth.php';
+verificarSesion();
 
 require_once '../bd/conexion.php'; 
 require_once '../bd/consultas.php';
