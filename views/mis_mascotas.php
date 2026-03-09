@@ -7,6 +7,7 @@ if (!isset($_SESSION['cedula'])) {
 }
 
 require_once '../bd/conexion.php'; 
+require_once '../bd/consultas.php';
 $titulo = "Mis Mascotas a Cargo - Pequeños Amigos";
 include('header.php');
 
@@ -16,18 +17,9 @@ $inicio = ($pagina > 1) ? ($pagina * $por_pagina) - $por_pagina : 0;
 $cedula_empleado = $_SESSION['cedula'];
 
 // Consulta filtrada por el empleado en sesión
-$sql = "SELECT m.*, e.nombre as cuidador 
-        FROM mascotas m 
-        JOIN empleados e ON m.cedula_empleado_encargado = e.cedula 
-        WHERE m.cedula_empleado_encargado = ? 
-        LIMIT $inicio, $por_pagina";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$cedula_empleado]);
-$mascotas = $stmt->fetchAll();
+$mascotas = obtenerMisMascotasPaginadasBD($pdo, $cedula_empleado, $inicio, $por_pagina);
 
-$total = $pdo->prepare("SELECT COUNT(*) FROM mascotas WHERE cedula_empleado_encargado = ?");
-$total->execute([$cedula_empleado]);
-$total_filas = $total->fetchColumn();
+$total_filas = contarMisMascotasBD($pdo, $cedula_empleado);
 $paginas_totales = ceil($total_filas / $por_pagina);
 ?>
 
@@ -113,7 +105,12 @@ $paginas_totales = ceil($total_filas / $por_pagina);
         </tr>
         <?php endforeach; ?>
     <?php else: ?>
-        <?php endif; ?>
+        <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-gray-400 italic">
+                No tienes mascotas asignadas actualmente.
+            </td>
+        </tr>
+    <?php endif; ?>
 </tbody>
             </table>
         </div>

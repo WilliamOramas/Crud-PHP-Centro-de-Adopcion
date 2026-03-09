@@ -7,6 +7,7 @@ if (!isset($_SESSION['cedula'])) {
 }
 
 require_once '../bd/conexion.php'; 
+require_once '../bd/consultas.php';
 $titulo = "Lista de Mascotas - Pequeños Amigos";
 include('header.php');
 
@@ -14,13 +15,9 @@ $por_pagina = 5;
 $pagina = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 $inicio = ($pagina > 1) ? ($pagina * $por_pagina) - $por_pagina : 0;
 
-$sql = "SELECT m.*, e.nombre as cuidador 
-        FROM mascotas m 
-        JOIN empleados e ON m.cedula_empleado_encargado = e.cedula 
-        LIMIT $inicio, $por_pagina";
-$mascotas = $pdo->query($sql)->fetchAll();
+$mascotas = obtenerMascotasPaginadasBD($pdo, $inicio, $por_pagina);
 
-$total = $pdo->query("SELECT COUNT(*) FROM mascotas")->fetchColumn();
+$total = contarMascotasBD($pdo);
 $paginas_totales = ceil($total / $por_pagina);
 ?>
 
