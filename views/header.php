@@ -9,6 +9,7 @@ if (!isset($titulo)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $titulo; ?></title>
+    <link rel="icon" type="image/x-icon" href="/adopcioncom/favicon.ico">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -27,7 +28,7 @@ if (!isset($titulo)) {
         }
     </script>
 
-    <link rel="stylesheet" href="styles/tailwind_index.css">
+    <link rel="stylesheet" href="/adopcioncom/views/styles/tailwind_index.css">
 </head>
 <body class="bg-brand-cream min-h-screen flex flex-col">
 
