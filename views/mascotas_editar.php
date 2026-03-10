@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
 }
 
 if (!$mascota) {
-    echo "<div class='max-w-7xl mx-auto p-6 lg:p-10'><p class='text-red-500 font-bold'>Error: Mascota no encontrada o ID no válido.</p></div>";
+    header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("Mascota no encontrada o ID no válido"));
     exit();
 }
 ?>
@@ -94,13 +94,26 @@ if (!$mascota) {
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const url = new URL(window.location);
-        if (url.searchParams.has('msj')) {
-            setTimeout(() => {
-                url.searchParams.delete('msj');
-                window.history.replaceState({}, '', url);
-            }, 3000);
-        }
+        const form = document.querySelector('form');
+        let formDirty = false;
+
+        // Detectar cambios en el formulario
+        form.addEventListener('input', () => {
+            formDirty = true;
+        });
+
+        // Advertir antes de salir si hay cambios
+        window.addEventListener('beforeunload', (e) => {
+            if (formDirty) {
+                e.preventDefault();
+                e.returnValue = 'Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?';
+            }
+        });
+
+        // Al enviar el formulario, permitimos la salida
+        form.addEventListener('submit', () => {
+            formDirty = false;
+        });
     });
 </script>
 
