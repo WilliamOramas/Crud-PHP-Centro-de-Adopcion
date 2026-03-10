@@ -50,6 +50,7 @@ $paginas_totales = ceil($total / $por_pagina);
                         <th class="px-6 py-5 text-xs font-bold uppercase text-gray-400 tracking-wider">Género</th>
                         <th class="px-6 py-5 text-xs font-bold uppercase text-gray-400 tracking-wider">Peso</th>
                         <th class="px-6 py-5 text-xs font-bold uppercase text-gray-400 tracking-wider">Cuidador</th>
+                        <th class="px-6 py-5 text-xs font-bold uppercase text-gray-400 tracking-wider text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -76,6 +77,15 @@ $paginas_totales = ceil($total / $por_pagina);
                                         <?= strtoupper(substr($m['cuidador'], 0, 1)) ?>
                                     </div>
                                     <span class="text-sm font-medium text-brand-dark"><?= $m['cuidador'] ?></span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center justify-center gap-2">
+                                    <a href="/adopcioncom/controllers/mascotas_eliminar.php?id=<?= $m['id_mascota'] ?>&from=lista" 
+                                       onclick="return confirm('¿Seguro que desea liberar esta mascota? Se moverá a la lista sin asignar.')"
+                                       class="px-3 py-1 bg-red-50 text-red-600 font-bold rounded-lg hover:bg-red-600 hover:!text-white transition-all text-xs">
+                                        Eliminar
+                                    </a>
                                 </div>
                             </td>
                         </tr>
