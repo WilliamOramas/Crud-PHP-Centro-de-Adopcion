@@ -18,9 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password_encriptada = password_hash($pass1, PASSWORD_BCRYPT);
 
     // Valida el nombre, apellido, cedula y contraseña del empleado
-  if (validarRegistroEmpleado($nombre, $apellido, $cedula, $pass1, $pass2)==false) {
-
-    header("Location: /adopcioncom/views/sign_in.php?msj=" . urlencode("Campos escritos incorrectamente"));
+  if (validarRegistroEmpleado($nombre, $apellido, $cedula, $pass1, $pass2) == false) {
+    header("Location: /adopcioncom/views/sign_in.php?msj=" . urlencode("Datos no válidos. La cédula debe tener 6-8 dígitos y la contraseña 8+ caracteres con una mayúscula y un número.") . "&tipo=error");
     exit();
     
 }
