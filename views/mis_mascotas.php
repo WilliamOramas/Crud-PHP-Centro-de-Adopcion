@@ -80,11 +80,18 @@ $paginas_totales = ceil($total_filas / $por_pagina);
             <td class="px-6 py-5 text-gray-600"><?= htmlspecialchars($m['genero']) ?></td>
             <td class="px-6 py-5">
                 <div class="flex items-center justify-center gap-2">
-                    <a href="/adopcioncom/controllers/adopcion.php?id=<?= $m['id_mascota'] ?>" 
-                       onclick="return confirm('¿Seguro que desea dar en adopción esta mascota?')"
-                       class="px-3 py-1 bg-brand-green/10 text-brand-green font-bold rounded-lg hover:bg-brand-green hover:!text-white transition-all text-xs">
-                        Adopción
-                    </a>
+                    <?php if ($m['estado'] === 'En tratamiento'): ?>
+                        <span title="No se puede dar en adopción una mascota en tratamiento"
+                              class="px-3 py-1 bg-gray-100 text-gray-400 font-bold rounded-lg cursor-not-allowed text-xs">
+                            Adopción
+                        </span>
+                    <?php else: ?>
+                        <a href="/adopcioncom/controllers/adopcion.php?id=<?= $m['id_mascota'] ?>" 
+                           onclick="return confirm('¿Seguro que desea dar en adopción esta mascota?')"
+                           class="px-3 py-1 bg-brand-green/10 text-brand-green font-bold rounded-lg hover:bg-brand-green hover:!text-white transition-all text-xs">
+                            Adopción
+                        </a>
+                    <?php endif; ?>
                     
                     <a href="mascotas_editar.php?id=<?= $m['id_mascota'] ?>" 
                        class="px-3 py-1 bg-blue-50 text-blue-600 font-bold rounded-lg hover:bg-blue-600 hover:!text-white transition-all text-xs">

@@ -14,14 +14,18 @@ if (isset($_GET['id'])) {
     $cedula_empleado = $_SESSION['cedula'];
 
     if (ValidarIdMascota($id) == true) {
-        if (BuscarCuidadorXidMascota($pdo,$id,$cedula_empleado)== true) {
-            eliminarMascotaPorEncargadoBD($pdo,$id,$cedula_empleado);
+        if (BuscarCuidadorXidMascota($pdo, $id, $cedula_empleado) == true) {
+            $mascota = obtenerMascotaPorIdBD($pdo, $id);
+            if ($mascota && $mascota['estado'] === 'En tratamiento') {
+                header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("No se puede dar en adopción una mascota en tratamiento"));
+                exit();
+            }
+            eliminarMascotaPorEncargadoBD($pdo, $id, $cedula_empleado);
         } else {
             header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("error al dar en adopcion"));
             exit();
         }
-        
-    }else {
+    } else {
         header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("error al buscar mascota a adoptar"));
         exit();
     }
