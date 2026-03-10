@@ -1,6 +1,11 @@
 <?php
+session_start();
+if (isset($_SESSION['cedula'])) {
+    header("Location: inicio.php");
+    exit();
+}
 $titulo = "Iniciar Sesión";
-include('header.php'); 
+include('header.php');
 ?>
 
 <div class="flex items-center justify-center p-4 min-h-[80vh]">
@@ -24,7 +29,6 @@ include('header.php');
             <div class="space-y-2">
                 <div class="flex justify-between items-center">
                     <label for="password" class="text-sm font-bold text-brand-dark">Contraseña</label>
-                    <a href="#" class="text-xs font-semibold text-brand-orange">¿Olvidaste tu contraseña?</a>
                 </div>
                 <input type="password" name="password" id="password" required
                        class="w-full px-5 py-4 rounded-2xl border-2 border-gray-100 bg-gray-50 focus:border-brand-green outline-none transition-all">

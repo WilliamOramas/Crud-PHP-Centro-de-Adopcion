@@ -1,12 +1,9 @@
 <?php
-session_start(); 
-
-if (!isset($_SESSION['cedula'])) { 
-    header("Location: /adopcioncom/views/login.php"); 
-    exit(); 
-}
+require_once '../controllers/auth.php';
+verificarSesion();
 
 require_once '../bd/conexion.php'; 
+require_once '../bd/consultas.php';
 $titulo = "Mis Mascotas a Cargo - Pequeños Amigos";
 include('header.php');
 
@@ -16,18 +13,9 @@ $inicio = ($pagina > 1) ? ($pagina * $por_pagina) - $por_pagina : 0;
 $cedula_empleado = $_SESSION['cedula'];
 
 // Consulta filtrada por el empleado en sesión
-$sql = "SELECT m.*, e.nombre as cuidador 
-        FROM mascotas m 
-        JOIN empleados e ON m.cedula_empleado_encargado = e.cedula 
-        WHERE m.cedula_empleado_encargado = ? 
-        LIMIT $inicio, $por_pagina";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$cedula_empleado]);
-$mascotas = $stmt->fetchAll();
+$mascotas = obtenerMisMascotasPaginadasBD($pdo, $cedula_empleado, $inicio, $por_pagina);
 
-$total = $pdo->prepare("SELECT COUNT(*) FROM mascotas WHERE cedula_empleado_encargado = ?");
-$total->execute([$cedula_empleado]);
-$total_filas = $total->fetchColumn();
+$total_filas = contarMisMascotasBD($pdo, $cedula_empleado);
 $paginas_totales = ceil($total_filas / $por_pagina);
 ?>
 
@@ -40,7 +28,7 @@ $paginas_totales = ceil($total_filas / $por_pagina);
         </div>
         
         <div class="flex flex-wrap gap-3">
-            <a href="/adopcioncom/views/dashboard.php" class="px-5 py-2 bg-white text-brand-dark font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-sm shadow-sm">
+            <a href="/adopcioncom/views/inicio.php" class="px-5 py-2 bg-white text-brand-dark font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-sm shadow-sm">
                 ← Inicio
             </a>
             <a href="mascotas_lista.php" class="px-5 py-2 bg-brand-green text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-md">
@@ -92,11 +80,18 @@ $paginas_totales = ceil($total_filas / $por_pagina);
             <td class="px-6 py-5 text-gray-600"><?= htmlspecialchars($m['genero']) ?></td>
             <td class="px-6 py-5">
                 <div class="flex items-center justify-center gap-2">
-                    <a href="/adopcioncom/controllers/adopcion.php?id=<?= $m['id_mascota'] ?>" 
-                       onclick="return confirm('¿Seguro que desea dar en adopción esta mascota?')"
-                       class="px-3 py-1 bg-brand-green/10 text-brand-green font-bold rounded-lg hover:bg-brand-green hover:!text-white transition-all text-xs">
-                        Adopción
-                    </a>
+                    <?php if ($m['estado'] === 'En tratamiento'): ?>
+                        <span title="No se puede dar en adopción una mascota en tratamiento"
+                              class="px-3 py-1 bg-gray-100 text-gray-400 font-bold rounded-lg cursor-not-allowed text-xs">
+                            Adopción
+                        </span>
+                    <?php else: ?>
+                        <a href="/adopcioncom/controllers/adopcion.php?id=<?= $m['id_mascota'] ?>" 
+                           onclick="return confirm('¿Seguro que desea dar en adopción esta mascota?')"
+                           class="px-3 py-1 bg-brand-green/10 text-brand-green font-bold rounded-lg hover:bg-brand-green hover:!text-white transition-all text-xs">
+                            Adopción
+                        </a>
+                    <?php endif; ?>
                     
                     <a href="mascotas_editar.php?id=<?= $m['id_mascota'] ?>" 
                        class="px-3 py-1 bg-blue-50 text-blue-600 font-bold rounded-lg hover:bg-blue-600 hover:!text-white transition-all text-xs">
@@ -113,7 +108,12 @@ $paginas_totales = ceil($total_filas / $por_pagina);
         </tr>
         <?php endforeach; ?>
     <?php else: ?>
-        <?php endif; ?>
+        <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-gray-400 italic">
+                No tienes mascotas asignadas actualmente.
+            </td>
+        </tr>
+    <?php endif; ?>
 </tbody>
             </table>
         </div>

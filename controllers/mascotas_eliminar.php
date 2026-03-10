@@ -20,7 +20,9 @@ if (isset($_GET['id'])) {
 
         //Busca los datos de la mascota para luego eliminar
         liberarMascotaDeAsignadoBD($pdo,$id);
-        header("Location: /adopcioncom/views/mis_mascotas.php") ;
+        $redirect = (isset($_GET['from']) && $_GET['from'] === 'lista') ? '/adopcioncom/views/mascotas_lista.php' : '/adopcioncom/views/mis_mascotas.php';
+        header("Location: $redirect?msj=" . urlencode("mascota movida a mascotas sin asignar")) ;
+        exit();
 
     } else {
         header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("Hubo un error al eliminar mascota"));

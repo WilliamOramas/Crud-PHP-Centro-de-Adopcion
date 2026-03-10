@@ -1,12 +1,9 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['cedula'])) { 
-    header("Location: /adopcioncom/views/login.php"); 
-    exit(); 
-}
+require_once '../controllers/auth.php';
+verificarSesion();
 
 require_once '../bd/conexion.php'; 
+require_once '../bd/consultas.php';
 $titulo = "Lista de Mascotas - Pequeños Amigos";
 include('header.php');
 
@@ -14,13 +11,9 @@ $por_pagina = 5;
 $pagina = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 $inicio = ($pagina > 1) ? ($pagina * $por_pagina) - $por_pagina : 0;
 
-$sql = "SELECT m.*, e.nombre as cuidador 
-        FROM mascotas m 
-        JOIN empleados e ON m.cedula_empleado_encargado = e.cedula 
-        LIMIT $inicio, $por_pagina";
-$mascotas = $pdo->query($sql)->fetchAll();
+$mascotas = obtenerMascotasPaginadasBD($pdo, $inicio, $por_pagina);
 
-$total = $pdo->query("SELECT COUNT(*) FROM mascotas")->fetchColumn();
+$total = contarMascotasBD($pdo);
 $paginas_totales = ceil($total / $por_pagina);
 ?>
 
@@ -33,7 +26,7 @@ $paginas_totales = ceil($total / $por_pagina);
         </div>
         
         <div class="flex flex-wrap gap-3">
-            <a href="/adopcioncom/views/dashboard.php" class="px-5 py-2 bg-white text-brand-dark font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-sm">
+            <a href="/adopcioncom/views/inicio.php" class="px-5 py-2 bg-white text-brand-dark font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-sm">
                 ← Inicio
             </a>
             <a href="/adopcioncom/views/mis_mascotas.php" class="px-5 py-2 bg-brand-green text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-md shadow-green-900/10">
@@ -85,6 +78,7 @@ $paginas_totales = ceil($total / $por_pagina);
                                     <span class="text-sm font-medium text-brand-dark"><?= $m['cuidador'] ?></span>
                                 </div>
                             </td>
+
                         </tr>
                         <?php endforeach; ?>
                     <?php else: ?>

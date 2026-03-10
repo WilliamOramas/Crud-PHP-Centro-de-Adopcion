@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (isset($_SESSION['cedula'])) {
+    header("Location: inicio.php");
+    exit();
+}
 $titulo = "Registro de Empleado";
 include('header.php');
 ?>
@@ -34,21 +39,22 @@ include('header.php');
             <div class="space-y-1">
                 <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Cédula de Identidad</label>
                 <input type="text" name="cedula" id="cedula" placeholder="Ej: 25123456" 
-                       pattern="\d{7,10}" title="La cédula debe tener entre 7 y 10 números" required
+                       pattern="\d{6,8}" title="La cédula debe tener entre 6 y 8 números" required
                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all text-sm">
             </div>
 
             <div class="space-y-1">
                 <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Contraseña</label>
-                <input type="password" name="password" id="password" placeholder="Mínimo 6 caracteres" 
-                       minlength="6" required
+                <input type="password" name="password" id="password" placeholder="Mínimo 8 caracteres, una mayúscula y un número" 
+                       pattern="^(?=.*[A-Z])(?=.*\d).{8,40}$" 
+                       title="Mínimo 8 caracteres, debe incluir al menos una mayúscula y un número" required
                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all text-sm">
             </div>
 
             <div class="space-y-1">
                 <label class="block text-xs font-bold text-brand-dark ml-1 uppercase">Confirmar Contraseña</label>
                 <input type="password" name="confirm_password" id="confirm_password" placeholder="Repite tu contraseña" 
-                       minlength="6" required
+                       required
                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-green outline-none transition-all text-sm">
             </div>
 
@@ -76,18 +82,17 @@ include('header.php');
     document.getElementById('registroForm').addEventListener('submit', function(event) {
         const pass = document.getElementById('password').value;
         const confirmPass = document.getElementById('confirm_password').value;
-        const nombre = document.getElementById('nombre').value.trim();
-        const apellido = document.getElementById('apellido').value.trim();
+        const passRegex = /^(?=.*[A-Z])(?=.*\d).{8,40}$/;
 
-        if (pass !== confirmPass) {
+        if (!passRegex.test(pass)) {
             event.preventDefault();
-            alert("¡Ups! Las contraseñas no coinciden. Por favor, verifícalas.");
+            window.location.href = `sign_in.php?msj=${encodeURIComponent("La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.")}&tipo=error`;
             return;
         }
 
-        if (nombre.length < 2 || apellido.length < 2) {
+        if (pass !== confirmPass) {
             event.preventDefault();
-            alert("Por favor, ingresa un nombre y apellido válidos.");
+            window.location.href = `sign_in.php?msj=${encodeURIComponent("¡Ups! Las contraseñas no coinciden.")}&tipo=error`;
             return;
         }
     });

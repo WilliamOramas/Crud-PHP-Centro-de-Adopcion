@@ -40,7 +40,7 @@ include('header.php');
                 <p class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-6 italic">¿Qué deseas hacer ahora?</p>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <a href="/adopcioncom/views/dashboard.php" 
+                    <a href="/adopcioncom/views/inicio.php" 
                        class="flex flex-col items-center p-4 rounded-2xl bg-gray-50 hover:bg-brand-green hover:text-white transition-all duration-300 group border border-transparent hover:border-brand-green shadow-sm hover:shadow-md">
                         <i class="bi bi-house-door text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
                         <span class="text-sm font-bold tracking-tight">Ir al Inicio</span>
@@ -49,13 +49,13 @@ include('header.php');
                     <a href="mascotas_lista.php" 
                        class="flex flex-col items-center p-4 rounded-2xl bg-gray-50 hover:bg-brand-orange hover:text-white transition-all duration-300 group border border-transparent hover:border-brand-orange shadow-sm hover:shadow-md">
                         <i class="bi bi-search text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
-                        <span class="text-sm font-bold tracking-tight">Ver Mascotas</span>
+                        <span class="text-sm font-bold tracking-tight">Ver Total de Mascotas del recinto</span>
                     </a>
 
                     <a href="mis_mascotas.php" 
                        class="flex flex-col items-center p-4 rounded-2xl bg-gray-50 hover:bg-brand-dark hover:text-white transition-all duration-300 group border border-transparent hover:border-brand-dark shadow-sm hover:shadow-md">
                         <i class="bi bi-journal-check text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
-                        <span class="text-sm font-bold tracking-tight">Mis Cargos</span>
+                        <span class="text-sm font-bold tracking-tight">Mis Mascotas</span>
                     </a>
                 </div>
             </div>

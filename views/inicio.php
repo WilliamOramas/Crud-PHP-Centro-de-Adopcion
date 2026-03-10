@@ -1,13 +1,9 @@
 <?php
-session_start(); // Inicia la sesion
+require_once '../controllers/auth.php';
+verificarSesion();
 $titulo = "Inicio";
-include('header.php'); 
+include('header.php');
 
-// Si no existe la variable de sesion cedula redirige al inicio de sesion
-if (!isset($_SESSION['cedula'])) { 
-    header("Location: /adopcioncom/views/login.php");
-    exit();
-}
 ?>
 
 <div class="flex items-center justify-center p-6 min-h-[80vh]">

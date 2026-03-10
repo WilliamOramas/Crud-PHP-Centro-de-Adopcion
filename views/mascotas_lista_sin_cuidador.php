@@ -1,12 +1,9 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['cedula'])) { 
-    header("Location: /adopcioncom/views/login.php"); 
-    exit(); 
-}
+require_once '../controllers/auth.php';
+verificarSesion();
 
 require_once '../bd/conexion.php'; 
+require_once '../bd/consultas.php';
 $titulo = "Mascotas sin Asignar - Pequeños Amigos";
 include('header.php');
 
@@ -14,10 +11,9 @@ $por_pagina = 5;
 $pagina = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 $inicio = ($pagina > 1) ? ($pagina * $por_pagina) - $por_pagina : 0;
 
-$sql = "SELECT m.* FROM mascotas_sin_asignar m LIMIT $inicio, $por_pagina";
-$mascotas_sin_asignar = $pdo->query($sql)->fetchAll();
+$mascotas_sin_asignar = obtenerMascotasSinAsignarPaginadasBD($pdo, $inicio, $por_pagina);
 
-$total = $pdo->query("SELECT COUNT(*) FROM mascotas_sin_asignar")->fetchColumn();
+$total = contarMascotasSinAsignarTotalBD($pdo);
 $paginas_totales = ceil($total / $por_pagina);
 ?>
 
