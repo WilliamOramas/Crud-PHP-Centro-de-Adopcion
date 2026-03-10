@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (isset($_SESSION['cedula'])) {
+    header("Location: inicio.php");
+    exit();
+}
 $titulo = "Registro de Empleado";
 include('header.php');
 ?>

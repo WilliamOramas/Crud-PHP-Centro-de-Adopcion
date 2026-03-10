@@ -1,7 +1,11 @@
 <?php
+session_start();
+if (isset($_SESSION['cedula'])) {
+    header("Location: inicio.php");
+    exit();
+}
 $titulo = "Iniciar Sesión";
 include('header.php');
-
 ?>
 
 <div class="flex items-center justify-center p-4 min-h-[80vh]">
