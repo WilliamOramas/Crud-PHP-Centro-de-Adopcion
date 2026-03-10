@@ -26,7 +26,7 @@ $paginas_totales = ceil($total / $por_pagina);
         </div>
         
         <div class="flex flex-wrap gap-3">
-            <a href="/adopcioncom/views/dashboard.php" class="px-5 py-2 bg-white text-brand-dark font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-sm">
+            <a href="/adopcioncom/views/inicio.php" class="px-5 py-2 bg-white text-brand-dark font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all text-sm">
                 ← Inicio
             </a>
             <a href="/adopcioncom/views/mis_mascotas.php" class="px-5 py-2 bg-brand-green text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-md shadow-green-900/10">

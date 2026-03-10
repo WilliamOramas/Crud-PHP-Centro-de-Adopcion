@@ -40,7 +40,7 @@ include('header.php');
                 <p class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-6 italic">¿Qué deseas hacer ahora?</p>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <a href="/adopcioncom/views/dashboard.php" 
+                    <a href="/adopcioncom/views/inicio.php" 
                        class="flex flex-col items-center p-4 rounded-2xl bg-gray-50 hover:bg-brand-green hover:text-white transition-all duration-300 group border border-transparent hover:border-brand-green shadow-sm hover:shadow-md">
                         <i class="bi bi-house-door text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
                         <span class="text-sm font-bold tracking-tight">Ir al Inicio</span>

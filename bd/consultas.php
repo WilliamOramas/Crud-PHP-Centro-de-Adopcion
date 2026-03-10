@@ -35,7 +35,7 @@ function autenticarEmpleadoBD($pdo, $cedula, $pass_usuario)
             $_SESSION['cedula'] = $empleado['cedula'];
             $_SESSION['nombre_completo'] = $empleado['nombre'] . " " . $empleado['apellido'];
 
-            header("Location: /adopcioncom/views/dashboard.php"); // Redirige a la página de inicio
+            header("Location: /adopcioncom/views/inicio.php"); // Redirige a la página de inicio
             exit();
         }
         else {
