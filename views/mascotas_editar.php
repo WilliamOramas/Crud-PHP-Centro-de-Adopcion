@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
 }
 
 if (!$mascota) {
-    header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("Mascota no encontrada o ID no válido"));
+    header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("Mascota no encontrada o ID no válido") . "&tipo=error");
     exit();
 }
 ?>

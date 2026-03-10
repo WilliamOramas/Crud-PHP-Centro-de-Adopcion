@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
 }
 
 if (!$mascota) {
-    echo "<div class='max-w-7xl mx-auto p-6 lg:p-10'><p class='text-red-500 font-bold'>Error: Mascota no encontrada o ID no válido.</p></div>";
+    header("Location: /adopcioncom/views/mascotas_lista_sin_cuidador.php?msj=" . urlencode("Mascota no encontrada o ID no válido") . "&tipo=error");
     exit();
 }
 ?>

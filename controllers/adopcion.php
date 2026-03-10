@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
         if (BuscarCuidadorXidMascota($pdo, $id, $cedula_empleado) == true) {
             $mascota = obtenerMascotaPorIdBD($pdo, $id);
             if ($mascota && $mascota['estado'] === 'En tratamiento') {
-                header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("No se puede dar en adopción una mascota en tratamiento"));
+                header("Location: /adopcioncom/views/mis_mascotas.php?msj=" . urlencode("No se puede dar en adopción una mascota en tratamiento") . "&tipo=error");
                 exit();
             }
             eliminarMascotaPorEncargadoBD($pdo, $id, $cedula_empleado);

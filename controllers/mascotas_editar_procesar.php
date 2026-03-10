@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $peso = $_POST['peso'];
 
     if (validarEditarMisMacotas($id, $nombre, $especie, $edad, $genero, $estado, $peso) == false) {
-        header("Location: /adopcioncom/views/mascotas_editar.php?id=$id&msj=" . urlencode("Datos invalidos ingresados"));
+        header("Location: /adopcioncom/views/mascotas_editar.php?id=$id&msj=" . urlencode("Datos invalidos ingresados") . "&tipo=error");
         exit();
     }
     actualizarMascotaConProtocoloBD($pdo, $nombre, $especie, $edad, $genero, $estado, $peso, $id);
